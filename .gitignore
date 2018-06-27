@@ -1,0 +1,16 @@
+# Logs
+logs
+*.log
+
+# Runtime data
+pids
+*.pid
+*.seed
+
+# Dependency directory
+
+node_modules
+backend/config/environments/development.js
+
+
+.idea
