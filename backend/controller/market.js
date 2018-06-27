@@ -20,7 +20,7 @@ module.exports.cancelOrder = cancelOrder;
 function getOpenOrders (req, res, next){
   const params = req.query;
   const url = 'market/getopenorders';
-  const options = getOptions(url, params);
+  const options = getOptions(url, req.body);
 
   request.get(options, (err, response, data) => {
     return res.json(JSON.parse(data));
@@ -33,9 +33,8 @@ function getOpenOrders (req, res, next){
  * @param rate (1.3)
  */
 function buyOrder (req, res, next){
-  const params = req.query;
   const url = 'market/buylimit';
-  const options = getOptions(url, params);
+  const options = getOptions(url, req.body);
 
   request.get(options, (err, response, data) => {
     return res.json(JSON.parse(data));
@@ -48,9 +47,8 @@ function buyOrder (req, res, next){
  * @param rate (1.3)
  */
 function sellOrder (req, res, next){
-  const params = req.query;
   const url = 'market/selllimit';
-  const options = getOptions(url, params);
+  const options = getOptions(url, req.body);
 
   request.get(options, (err, response, data) => {
     return res.json(JSON.parse(data));
@@ -61,9 +59,8 @@ function sellOrder (req, res, next){
  * @param uuid (hgfdhre54d-jtfgh)
  */
 function cancelOrder (req, res, next){
-  const params = req.query;
   const url = 'market/cancel';
-  const options = getOptions(url, params);
+  const options = getOptions(url, req.body);
 
   request.get(options, (err, response, data) => {
     return res.json(JSON.parse(data));
@@ -78,10 +75,10 @@ function sellToLastBid(req, res, next) {
 
 function buyToLastAsk(req, res, next) {
   const { ticker } = req.resources;
-  const params = req.query;
-  console.log('params', params);
+  const body = req.body;
+
   const data = {
-    ...params,
+    ...body,
     // quantity: 0.1,
     rate: ticker.result.Ask
   };

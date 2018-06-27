@@ -19,7 +19,7 @@ module.exports.formatDataMarketsV2 = formatDataMarketsV2;
 function getOrderBook (req, res, next){
   const params = req.query;
   const url = 'public/getorderbook';
-  const options = getOptions(url, params);
+  const options = getOptions(url, req.body);
 
   request.get(options, (err, response, data) => {
     return res.json(JSON.parse(data));
@@ -30,9 +30,8 @@ function getOrderBook (req, res, next){
  * @param market (BTC-LTC)
  */
 function getTicker (req, res, next){
-  const params = req.query;
   const url = 'public/getticker';
-  const options = getOptions(url, params);
+  const options = getOptions(url, req.body);
 
   request.get(options, (err, response, data) => {
     if(!IsJsonString(data)) {
@@ -53,9 +52,8 @@ function getTicker (req, res, next){
  * @param market (BTC-LTC)
  */
 function getMarkets (req, res, next){
-  const params = req.query;
   const url = 'public/getmarkets';
-  const options = getOptions(url, params);
+  const options = getOptions(url, req.body);
 
   request.get(options, (err, response, data) => {
     req.resources.market = JSON.parse(data);
@@ -67,9 +65,8 @@ function getMarkets (req, res, next){
  * @param tickInterval [“oneMin”, “fiveMin”, “thirtyMin”, “hour”, “day”]
  */
 function getMarketsV2 (req, res, next){
-  const params = req.query;
   const url = 'market/GetTicks';
-  const options = getOptionsV2(url, params);
+  const options = getOptionsV2(url, req.body);
 
   request.get(options, (err, response, data) => {
     if(!IsJsonString(data)) {
