@@ -2,7 +2,7 @@ const request = require('request');
 
 const getOptions = require('../helpers/url').getOptions;
 const getOptionsV2 = require('../helpers/url').getOptionsV2;
-
+const {IsJsonString} = require('../helpers/json');
 /**
  *  Module exports
  */
@@ -35,7 +35,17 @@ function getTicker (req, res, next){
   const options = getOptions(url, params);
 
   request.get(options, (err, response, data) => {
-    req.resources.ticker = JSON.parse(data);
+    if(!IsJsonString(data)) {
+      return next({message: 'No parse string available'});
+    }
+
+    const parsedData = JSON.parse(data);
+
+    if(!parsedData.success) {
+      return next(parsedData)
+    }
+
+    req.resources.ticker = parsedData;
     return next();
   });
 }
@@ -62,8 +72,13 @@ function getMarketsV2 (req, res, next){
   const options = getOptionsV2(url, params);
 
   request.get(options, (err, response, data) => {
+    if(!IsJsonString(data)) {
+      return next({message: 'No parse string available'});
+    }
+
     req.resources.market = JSON.parse(data);
-    return next();
+    next();
+
   });
 }
 

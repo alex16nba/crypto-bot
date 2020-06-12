@@ -3,6 +3,7 @@ const router = express.Router();
 
 const marketCtrl = require('../controller/market');
 const publicCtrl = require('../controller/public');
+const mainCtrl = require('../controller/main');
 
 router.get('/getOpenOrders', marketCtrl.getOpenOrders);
 
@@ -20,7 +21,8 @@ router.get('/sellToLastBid',
 
 router.get('/buyToLastAsk',
   publicCtrl.getTicker,
-  marketCtrl.sellOrder
+  marketCtrl.buyToLastAsk,
+  mainCtrl.toJSON('order')
 );
 
 module.exports = router;

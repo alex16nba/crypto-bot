@@ -20,6 +20,11 @@ router.get('/getMarkets',
 
 router.get('/getMarketsV2',
   publicCtrl.getMarketsV2,
+  mainCtrl.toJSON('market')
+);
+
+router.get('/getEmas',
+  publicCtrl.getMarketsV2,
   publicCtrl.formatDataMarketsV2,
   mainCtrl.toJSON('emas')
 );

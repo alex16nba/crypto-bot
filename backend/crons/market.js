@@ -11,9 +11,9 @@ const headers =  {
 };
 
 // runs from 5 in 5 seconds
-new CronJob('*/30 * * * * * ', () => {
+new CronJob('*/45 * * * * * ', () => {
   const now = new Date();
-  const url = `${baseUrl}/getMarketsV2?marketName=BTC-ETH&tickInterval=fiveMin`;
+  const url = `${baseUrl}/getEmas?marketName=BTC-ETH&tickInterval=fiveMin`;
   const transactionUrl = `${baseUrl}/addTransaction`;
   const tickerUrl = `${baseUrl}/getTicker?market=BTC-ETH`;
 

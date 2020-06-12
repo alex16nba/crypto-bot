@@ -1,6 +1,7 @@
 const request = require('request');
 
-const getOptions = require('../helpers/url').getOptions;
+const {getOptions} = require('../helpers/url');
+const {IsJsonString} = require('../helpers/json');
 
 /**
  *  Module exports
@@ -76,8 +77,34 @@ function sellToLastBid(req, res, next) {
 }
 
 function buyToLastAsk(req, res, next) {
-  const { ticker } = req.resource;
-  console.log('ticker', ticker);
-  return next();
+  const { ticker } = req.resources;
+  const params = req.query;
+  console.log('params', params);
+  const data = {
+    ...params,
+    // quantity: 0.1,
+    rate: ticker.result.Ask
+  };
+  const url = 'market/buylimit';
+  const options = getOptions(url, data);
+  console.log('data', data);
+
+  // return res.json({test: 1231});
+
+  request.get(options, (err, response, data) => {
+    if(!IsJsonString(data)) {
+      return next({message: 'No parse string available'});
+    }
+
+    const parsedData = JSON.parse(data);
+
+    if(!parsedData.success) {
+      return next(parsedData)
+    }
+
+    req.resources.order = parsedData;
+
+    next();
+  });
 }
 
